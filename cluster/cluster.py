@@ -1,5 +1,6 @@
 from distance import compareDiff as dist_fn
 from random import randint
+from models import *
 # def cluster():
 # //input: K, set of points x1...xn
 # //place centroids c1...ck at random locations

@@ -1,8 +1,7 @@
 import random
 from cluster import cluster
 from pprint import pprint
-from models import Person
-from models import Event
+from models import *
 from Config import utils 
 from pprint import pprint
 from Scheduling import Aggregates as aggr
