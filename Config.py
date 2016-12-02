@@ -7,17 +7,17 @@ class utils(object):
 		self.SLOT = 9
 
 		# PERSONAL
-		self.VAL = 7
-		self.PERSONAL_E_MAX = 45
-		self.PERSONAL_E_MIN = 35
+		self.VAL = 3
+		self.PERSONAL_E_MAX = 40
+		self.PERSONAL_E_MIN = 30
 
 		# DEPARTMENTS - PERSONS
-		self.DEPT_COUNT = 2
-		self.PER_DEPT = 4
+		self.DEPT_COUNT = 3
+		self.PER_DEPT = 10
 
 		# DEPARTMENT-EVENTS
 		# TYPE A - PER DEPARTMENT
-		self.DEPT_EVENTS_A = 6
+		self.DEPT_EVENTS_A = 128
 		self.A_INVITE_MAX = 3
 		self.A_INVITE_MIN = 2
 

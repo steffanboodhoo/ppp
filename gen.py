@@ -7,6 +7,7 @@ from Config import utils
 from pprint import pprint
 from Scheduling import Aggregates as aggr
 from Scheduling import EventManipulation as evman
+import copy
 import random
 
 def test():
@@ -60,10 +61,13 @@ if __name__ == '__main__':
 	# pprint(clusters)
 	utl = utils()
 	[P,depts] = genP(utl)
+	base_P = copy.deepcopy(P)
 	E = genE(utl, P, depts)
 	# for p in P:
 	# 	print p
-	evman.TS(E, P, utl)
-	for i in range(len(E)):
-		print E[i]
-	print aggr.totalSum(P,utl)
+	base =  aggr.totalSum(P=P,utl=utl)
+	evman.TS(E=E, P=P, utl=utl)
+	ts = aggr.totalSum(P=P, utl=utl)
+	evman.CA(E=E, P=P, utl=utl, base_P=base_P)
+	ca = aggr.totalSum(P=P, utl=utl)
+	print ca - ts

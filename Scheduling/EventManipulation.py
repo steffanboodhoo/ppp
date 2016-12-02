@@ -47,6 +47,13 @@ def removeEvent(e_i, E, P, base_P):
 def TS(E, P, utl):
 	for event in E:
 		[max_day, max_slot] = findPlace(event, P, utl)
+		placeEvent(event, P)
+
+def CA(E, P, utl, base_P):
+	for event in E:
+		removeEvent(event.id, E, P, base_P)
+		[max_day, max_slot] = findPlace(event, P, utl)
+		placeEvent(event,P)
 
 
 if __name__ == '__main__':
