@@ -1,5 +1,5 @@
 import random
-from cluster import cluster
+from Clus import core
 from pprint import pprint
 from models import *
 from Config import utils 
@@ -62,11 +62,15 @@ if __name__ == '__main__':
 	[P,depts] = genP(utl)
 	base_P = copy.deepcopy(P)
 	E = genE(utl, P, depts)
-	# for p in P:
-	# 	print p
-	base =  aggr.totalSum(P=P,utl=utl)
-	evman.TS(E=E, P=P, utl=utl)
-	ts = aggr.totalSum(P=P, utl=utl)
-	evman.CA(E=E, P=P, utl=utl, base_P=base_P)
-	ca = aggr.totalSum(P=P, utl=utl)
-	print ca - ts
+	C = core.initClusters(P, utl.K, depts)
+	C = core.placePeople(P,C)
+	# for c in C:
+	# 	print c
+	C[0].recalculateCentroid(P,3)
+	# base =  aggr.totalSum(P=P,utl=utl)
+	# evman.TS(E=E, P=P, utl=utl)
+	# ts = aggr.totalSum(P=P, utl=utl)
+	# evman.CA(E=E, P=P, utl=utl, base_P=base_P)
+	# ca = aggr.totalSum(P=P, utl=utl)
+	# print ca - ts
+	

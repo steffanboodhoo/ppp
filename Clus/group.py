@@ -46,6 +46,6 @@ def selectEventPlacements(e_i, C, P):
 def placementValue(event, P):
 	sum = 0
 	for p_i in event.invited:
-		if event.weight > P[p_i].SCHEDULE[event.day][event.slot]
+		if event.weight > P[p_i].SCHEDULE[event.day][event.slot]:
 			sum = event.weight - P[p_i].SCHEDULE[event.day][event.slot]
 	return sum

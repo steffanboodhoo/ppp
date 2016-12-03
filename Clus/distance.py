@@ -1,3 +1,4 @@
+INF = 9999999999
 def main():
 	print 'hello'
 	print 'larger is further :'+ str( m,( [1], [2,3,4] ))
@@ -9,10 +10,13 @@ def compareDiff(X,Y):
 	y_length = len(Y)
 
 	diff = i = j = 0
+	#i isn't at the end of X and j isnt at the end of Y
 	while(i!=x_length and j!=y_length):
+		#elements match so move forward
 		if X[i]==Y[j]:
 			i+=1
 			j+=1
+		#elements dont match, if Xi is bigger move Yj onto the next and add 1 to different elem count
 		elif X[i]>Y[j]:
 			j+=1
 			diff+=1
@@ -41,6 +45,20 @@ def compareSame(X,Y):
 			i+=1
 
 	return same
+
+# in jaccard Index closer to 1 means closer to being the same.
+# we are going to return the inverse to keep it more standard therefore
+# the closer to 1 the smaller number it would return meaning less distance 
+# the closer to 0 the higher the number returned meaning greater distance
+def jaccardIndex(X,Y):
+	sx = set(X)
+	sy = set(Y)
+	intersection = sx & sy
+	union = sx | sy
+	val = len(intersection)*1.0 / len(union)*1.0
+	if val == 0:
+		return INF
+
 
 
 if __name__ == '__main__':
