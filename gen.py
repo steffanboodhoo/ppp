@@ -54,13 +54,6 @@ def genE(utl, P, depts):
 
 if __name__ == '__main__':
 	
-	# P = test()
-	# k=3
-	# centroids = cluster.select_centroids(P,k)
-	# print centroids
-	# clusters = cluster.place_points(P,centroids)
-	# pprint(clusters)
-	# utl = utils()
 	[P,depts] = genP()
 	base_P = copy.deepcopy(P)
 	E = genE(utl, P, depts)
@@ -69,25 +62,13 @@ if __name__ == '__main__':
 	for c in C:
 		c.scheduleClusterP1( copy.deepcopy(E), copy.deepcopy(P), base_P)
 
-	for e_i in range(len(E)):
-		for c in C:
-			print c.E[e_i]
-		# print E[e_i]
-		print '\n'
 
-	# evman.TS( E=E, P=P, utl=utl)
-	# print aggr.totalSum(P=P,utl=utl),'\n'
+	print aggr.totalSum(P=P,utl=utl)
+
 	group.evaluateClusterPlacements(E, P, C)
 	for e in E:
 		evman.placeEvent(e, P)
 
-	# for c in C:
-	# 	print c
-	# C[0].recalculateCentroid(P,3)
-	# base =  aggr.totalSum(P=P,utl=utl)
-	# evman.TS(E=E, P=P, utl=utl)
-	# ts = aggr.totalSum(P=P, utl=utl)
-	# evman.CA(E=E, P=P, utl=utl, base_P=base_P)
-	# ca = aggr.totalSum(P=P, utl=utl)
-	# print ca - ts
+	print aggr.totalSum(P=P,utl=utl)
+
 	
