@@ -50,10 +50,6 @@ def findCluster(person, C):
 	return min_ci
 
 
-def recalculate_centroids(clusters):
-	for cluster in clusters:
-		print
-
 if __name__ == '__main__':
 	print 'hello world'
 

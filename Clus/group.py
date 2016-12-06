@@ -1,12 +1,5 @@
 import copy
 
-def getEventSet( P, members ):
-	event_list = []
-	for p_i in members:
-		event_list.extend(P[p_i].events)
-	event_set = set(event_list)
-	return event_set
-
 def unique( c_i, C):
 	e_unique = C[c_i].event_set
 	for c_j in C:
@@ -30,7 +23,7 @@ def getEventsSubsetDeep(E, indicies):
 
 
 #requires baae_P
-def selectEventPlacements(e_i, C, P):
+def selectEventPlacement(P, C, e_i):
 	max_val = -1
 	max_c = None
 	for c_i in range(len(C)):
@@ -44,8 +37,14 @@ def selectEventPlacements(e_i, C, P):
 	return C[max_c].E[e_i]
 
 def placementValue(event, P):
+	if event.day == None:
+		return -1
 	sum = 0
 	for p_i in event.invited:
 		if event.weight > P[p_i].SCHEDULE[event.day][event.slot]:
 			sum = event.weight - P[p_i].SCHEDULE[event.day][event.slot]
 	return sum
+
+def evaluateClusterPlacements(E, P, C):
+	for e_i in range(len(E)):
+		E[e_i] = selectEventPlacement(P, C, e_i)

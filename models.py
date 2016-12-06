@@ -3,20 +3,22 @@ from Clus import group
 import collections
 import random
 import operator
+from Config import utils 
+from Scheduling import Aggregates as aggr
+from Scheduling import EventManipulation as evman
 
-
-
+utl = utils()
 class Person(object):
-	def __init__(self,utils, id, dept):
+	def __init__(self, id, dept):
 		self.id = id
 		self.events = []
 		self.dept = dept
 		self.role = None
 		self.SCHEDULE = None
-		self.fillSchedule(utils)
+		self.fillSchedule()
 		self.cluster = None
 
-	def fillSchedule(self, utl):
+	def fillSchedule(self):
 		self.SCHEDULE = [[utl.VAL for i in range(utl.SLOT)] for i in range(utl.DAY)]
 
 		# number of personal events
@@ -46,7 +48,7 @@ class Event(object):
 		self.length = length
 		self.invited = []
 
-	def inviteA(self, dept, utl, P):
+	def inviteA(self, P, dept):
 		invite_count = random.randint( utl.A_INVITE_MIN, utl.A_INVITE_MAX)
 		self.invited = random.sample(dept['P'], invite_count)
 
@@ -58,11 +60,16 @@ class Event(object):
 			+'\nDAY:'+ str(self.day) + '   SLOT:' + str(self.slot) \
 			+'\nINVITED:'+str(self.invited)
 
+
+
 class Cluster(object):
 	def __init__(self, id, centroid=None):
 		self.id = id
 		self.centroid = centroid
 		self.members = []
+		self.E = None
+		self.Ec_d = None #Events of this Cluster, Distinct elements
+		self.Ec_u = None #Events of this Cluster, Unique elements ( different from all other clusters)
 
 	def recalculateCentroid(self, P, l):
 		full_list = []
@@ -93,19 +100,19 @@ class Cluster(object):
 				aggr_freq[len(aggr_freq)-1].append(f_tuple[0])
 		
 		print aggr_freq
-		k=1
+		k=0
 		i=0
 		j=0
 		self.centroid = []
-		while k<l:
-			free = l - k
+		while k<=l and i<len(aggr_freq):
+			free = l - k + 1
 			print '---'
 			if len(aggr_freq[i])<=free:
 				self.centroid.extend(aggr_freq[i])
 				k += len(aggr_freq[i])
 				i += 1
 			else:
-				r = random.sample(aggr_freq[i],free+1)
+				r = random.sample(aggr_freq[i],free)
 				self.centroid.extend(r)
 				k += free
 
@@ -113,6 +120,21 @@ class Cluster(object):
 
 		print self.centroid
 
+	def setDistinctEvents( self, P ):
+		self.Ec_d = []
+		for p_i in self.members:
+			self.Ec_d.extend(P[p_i].events)
+		self.Ec_d = set(self.Ec_d)
+
+
+	def scheduleClusterP1(self, E, P, base_P):
+		self.E = E
+		self.setDistinctEvents(P)
+		Ec_linked = group.getEventsSubsetShallow(E=E, indicies=list(self.Ec_d))
+		print aggr.totalSum(P=P,utl=utl)
+		# print Ec_temp
+		evman.TS( E=Ec_linked, P=P, utl=utl)
+		print aggr.totalSum(P=P,utl=utl),'\n'
 
 	def __str__(self):
 		return '\nID' + str(self.id) + '\nCentroid:' + str(self.centroid) + '\nMembers:' + str(self.members)
