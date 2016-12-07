@@ -44,6 +44,15 @@ def removeEvent(e_i, E, P, base_P):
 				and E[e_j].weight > person.SCHEDULE[event.day][event.slot]:
 				person.SCHEDULE[event.day][event.slot] = E[e_j].weight
 
+def totalSum(P, utl):
+	sum = 0
+	for d in range(utl.DAY):
+		for t in range(utl.SLOT):
+			for person in P:
+				sum += person.SCHEDULE[d][t]
+
+	return sum
+	
 def TS(E, P, utl):
 	for event in E:
 		[max_day, max_slot] = findPlace(event, P, utl)

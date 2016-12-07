@@ -1,7 +1,6 @@
 import distance as distfn
 from random import randint, sample
 from models import *
-import group
 # def cluster():
 # //input: K, set of points x1...xn
 # //place centroids c1...ck at random locations

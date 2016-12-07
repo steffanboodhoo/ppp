@@ -4,7 +4,6 @@ from pprint import pprint
 from models import *
 from Config import utils 
 from pprint import pprint
-from Scheduling import Aggregates as aggr
 from Scheduling import EventManipulation as evman
 
 import copy
@@ -55,7 +54,7 @@ def genE(utl, P, depts):
 if __name__ == '__main__':
 	
 	[P,depts] = genP()
-	base_P = copy.deepcopy(P)
+	base_P = copy.deepcopy(P) 
 	E = genE(utl, P, depts)
 	C = core.initClusters(P, utl.K, depts)
 	C = core.placePeople(P,C)
@@ -63,12 +62,12 @@ if __name__ == '__main__':
 		c.scheduleClusterP1( copy.deepcopy(E), copy.deepcopy(P), base_P)
 
 
-	print aggr.totalSum(P=P,utl=utl)
+	print evman.totalSum(P=P,utl=utl)
 
 	group.evaluateClusterPlacements(E, P, C)
 	for e in E:
 		evman.placeEvent(e, P)
 
-	print aggr.totalSum(P=P,utl=utl)
+	print evman.totalSum(P=P,utl=utl)
 
 	
