@@ -1,5 +1,6 @@
-import distance as distfn
 from random import randint, sample
+
+import distance as distfn
 from models import *
 # def cluster():
 # //input: K, set of points x1...xn

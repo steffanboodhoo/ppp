@@ -1,4 +1,3 @@
-import copy
 
 def unique( c_i, C):
 	e_unique = C[c_i].event_set
@@ -13,14 +12,6 @@ def getEventsSubsetShallow(E, indicies):
 	for e_i in indicies:
 		E_p.append( E[e_i] )
 	return E_p
-
-def getEventsSubsetDeep(E, indicies):
-	E_p = []
-	for e_i in indicies:
-		E_p.append( copy.deepcopy(E[e_i]) )
-	return E_p
-
-
 
 #requires baae_P
 def selectEventPlacement(P, C, e_i):
@@ -48,3 +39,9 @@ def placementValue(event, P):
 def evaluateClusterPlacements(E, P, C):
 	for e_i in range(len(E)):
 		E[e_i] = selectEventPlacement(P, C, e_i)
+
+# def getEventsSubsetDeep(E, indicies):
+# 	E_p = []
+# 	for e_i in indicies:
+# 		E_p.append( copy.deepcopy(E[e_i]) )
+# 	return E_p

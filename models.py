@@ -1,13 +1,12 @@
 from pprint import pprint
-from Clus import group
 import collections
 import random
 import operator
-from Config import utils 
-from Scheduling import Aggregates as aggr
-from Scheduling import EventManipulation as evman
 
-utl = utils()
+from Config import Utils 
+from Scheduling import EventManipulation as evman, group
+
+utl = Utils.Instance()
 class Person(object):
 	def __init__(self, id, dept):
 		self.id = id
@@ -127,14 +126,14 @@ class Cluster(object):
 		self.Ec_d = set(self.Ec_d)
 
 
-	def scheduleClusterP1(self, E, P, base_P):
+	def scheduleClusterP1(self, E, P):
 		self.E = E
 		self.setDistinctEvents(P)
 		Ec_linked = group.getEventsSubsetShallow(E=E, indicies=list(self.Ec_d))
-		print aggr.totalSum(P=P,utl=utl)
+		print evman.totalSum(P=P,utl=utl)
 		# print Ec_temp
 		evman.TS( E=Ec_linked, P=P, utl=utl)
-		print aggr.totalSum(P=P,utl=utl),'\n'
+		print evman.totalSum(P=P,utl=utl),'\n'
 
 	def __str__(self):
 		return '\nID' + str(self.id) + '\nCentroid:' + str(self.centroid) + '\nMembers:' + str(self.members)

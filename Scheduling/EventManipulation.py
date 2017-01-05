@@ -1,4 +1,5 @@
 #P is the population of people
+#returns [day, time]
 def findPlace(event, P, utl):
 	max_sum = 0
 	max_day = 0
@@ -44,6 +45,7 @@ def removeEvent(e_i, E, P, base_P):
 				and E[e_j].weight > person.SCHEDULE[event.day][event.slot]:
 				person.SCHEDULE[event.day][event.slot] = E[e_j].weight
 
+#finds the sum of all values in P
 def totalSum(P, utl):
 	sum = 0
 	for d in range(utl.DAY):

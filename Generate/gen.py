@@ -1,23 +1,11 @@
-import random
-from Clus import core, group
-from pprint import pprint
-from models import *
-from Config import utils 
-from pprint import pprint
-from Scheduling import EventManipulation as evman
-
 import copy
 import random
+from pprint import pprint
 
-utl = utils()
-def test():
-	#Event space
-	events = range(1,11)
-	P = []
-	for i in range(10):
-		P.append(random.sample(events,random.randint(3,5)))
-	return P
+from Config import Utils 
+from models import *
 
+utl = Utils.Instance()
 
 def genP():
 	P = []
@@ -52,22 +40,7 @@ def genE(utl, P, depts):
 	return E
 
 if __name__ == '__main__':
-	
-	[P,depts] = genP()
-	base_P = copy.deepcopy(P) 
-	E = genE(utl, P, depts)
-	C = core.initClusters(P, utl.K, depts)
-	C = core.placePeople(P,C)
-	for c in C:
-		c.scheduleClusterP1( copy.deepcopy(E), copy.deepcopy(P), base_P)
+	print 'hi'
 
-
-	print evman.totalSum(P=P,utl=utl)
-
-	group.evaluateClusterPlacements(E, P, C)
-	for e in E:
-		evman.placeEvent(e, P)
-
-	print evman.totalSum(P=P,utl=utl)
 
 	

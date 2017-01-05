@@ -1,7 +1,21 @@
+from PatternSingleton import Singleton
 
-class utils(object):
+@Singleton
+class Utils:
+
+	# _instance = None
+
+	# @staticmethod
+	# def getInstance(x):
+	# 	if Utils._instance is None: 
+	# 		Utils._instance = Utils()
+	# 		print '~~~ created instance'
+	# 	else:
+	# 		print '~~~ instance already created'
+	# 	return Utils._instance
 
 	def __init__(self):
+		print 'Utils created'
 		self.K = 3
 
 		# SCHEDULE
