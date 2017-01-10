@@ -7,6 +7,8 @@ def unique( c_i, C):
 
 	return e_unique
 
+#retrieves the events from E given by the indicies, indicies. 
+#It creates a shallow copy which when modified, modifies E as well
 def getEventsSubsetShallow(E, indicies):
 	E_p = []
 	for e_i in indicies:
@@ -19,11 +21,10 @@ def selectEventPlacement(P, C, e_i):
 	max_c = None
 	for c_i in range(len(C)):
 		event = C[c_i].E[e_i] 
-		if event.day is not None:
-			val = placementValue(event, P)
-			if val > max_val:
-				max_val = val
-				max_c = c_i
+		val = placementValue(event, P)
+		if val > max_val:
+			max_val = val
+			max_c = c_i
 	#max_c contains the cluster with best event placement for e_i
 	return C[max_c].E[e_i]
 

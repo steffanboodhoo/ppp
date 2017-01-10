@@ -55,10 +55,12 @@ def jaccardIndex(X,Y):
 	sy = set(Y)
 	intersection = sx & sy
 	union = sx | sy
+	if len(union) == 0: #both cluster and person has no elements
+		return 0
 	val = len(intersection)*1.0 / len(union)*1.0
-	if val == 0:
+	if val == 0: #this means the intersection was 0 meaning no similar elements
 		return INF
-
+	return 1/val
 
 
 if __name__ == '__main__':

@@ -16,7 +16,8 @@ class Utils:
 
 	def __init__(self):
 		print 'Utils created'
-		self.K = 3
+		#number of clusters
+		self.K_CLUSTERS = 12
 
 		# SCHEDULE
 		self.DAY = 2
@@ -28,14 +29,14 @@ class Utils:
 		self.PERSONAL_E_MIN = 5
 
 		# DEPARTMENTS - PERSONS
-		self.DEPT_COUNT = 3
-		self.PER_DEPT = 3
+		self.DEPT_COUNT = 6 #number of departments
+		self.PER_DEPT = 100
 
 		# DEPARTMENT-EVENTS
 		# TYPE A - PER DEPARTMENT
-		self.DEPT_EVENTS_A = 3
-		self.A_INVITE_MAX = 3
-		self.A_INVITE_MIN = 2
+		self.DEPT_EVENTS_A = 1000
+		self.A_INVITE_MAX = 6
+		self.A_INVITE_MIN = 3
 
 		# TYPE B - INTER DEPT MEETING
 		self.DEPT_EVENTS_B = 4

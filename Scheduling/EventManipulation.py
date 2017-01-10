@@ -1,6 +1,8 @@
+from Config import Utils
 #P is the population of people
 #returns [day, time]
-def findPlace(event, P, utl):
+def findPlace(event, P):
+	utl = Utils.Instance()
 	max_sum = 0
 	max_day = 0
 	max_slot = 0
@@ -37,7 +39,12 @@ def removeEvent(e_i, E, P, base_P):
 
 		#try placing other events that have the same day & slot
 		#conditions; not same event, same day, same slot, event weight bigger than day,slot weight
+		# print person.events
 		for e_j in person.events:
+			
+			# print e_j,'---'
+			# print len(E)
+			# print E[e_j]
 			#not same event
 			if e_j != e_i \
 				and E[e_i].day == E[e_j].day \
@@ -46,7 +53,8 @@ def removeEvent(e_i, E, P, base_P):
 				person.SCHEDULE[event.day][event.slot] = E[e_j].weight
 
 #finds the sum of all values in P
-def totalSum(P, utl):
+def totalSum(P):
+	utl = Utils.Instance()
 	sum = 0
 	for d in range(utl.DAY):
 		for t in range(utl.SLOT):
@@ -55,15 +63,17 @@ def totalSum(P, utl):
 
 	return sum
 	
-def TS(E, P, utl):
+def TS(E, P):
+	utl = Utils.Instance()
 	for event in E:
-		[max_day, max_slot] = findPlace(event, P, utl)
+		[max_day, max_slot] = findPlace(event, P)
 		placeEvent(event, P)
 
-def CA(E, P, utl, base_P):
+def CA(E, P, base_P):
+	utl = Utils.Instance()
 	for event in E:
 		removeEvent(event.id, E, P, base_P)
-		[max_day, max_slot] = findPlace(event, P, utl)
+		[max_day, max_slot] = findPlace(event, P)
 		placeEvent(event,P)
 
 

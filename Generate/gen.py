@@ -5,9 +5,10 @@ from pprint import pprint
 from Config import Utils 
 from models import *
 
-utl = Utils.Instance()
+
 
 def genP():
+	utl = Utils.Instance()
 	P = []
 	#creating departments
 	depts = [0] * utl.DEPT_COUNT
@@ -29,14 +30,16 @@ def genP():
 
 
 def genE(utl, P, depts):
+	utl = Utils.Instance()
 	E = []
 
 	#TYPE A
 	for i in range(utl.DEPT_COUNT):
 		for j in range(utl.DEPT_EVENTS_A):
-			event = Event(id=len(E), weight=random.randint(utl.VAL+1,10))
+			event = Event(id=len(E)-1, weight=random.randint(utl.VAL+1,10))
 			event.inviteA( P=P, dept=depts[i])
 			E.append(event)
+
 	return E
 
 if __name__ == '__main__':

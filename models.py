@@ -8,7 +8,9 @@ from Scheduling import EventManipulation as evman, group
 
 utl = Utils.Instance()
 class Person(object):
+
 	def __init__(self, id, dept):
+
 		self.id = id
 		self.events = []
 		self.dept = dept
@@ -50,7 +52,7 @@ class Event(object):
 	def inviteA(self, P, dept):
 		invite_count = random.randint( utl.A_INVITE_MIN, utl.A_INVITE_MAX)
 		self.invited = random.sample(dept['P'], invite_count)
-
+		
 		for p_i in self.invited:
 			P[p_i].events.append(self.id)
 
@@ -126,14 +128,15 @@ class Cluster(object):
 		self.Ec_d = set(self.Ec_d)
 
 
-	def scheduleClusterP1(self, E, P):
+	def scheduleClusterP1(self, E, P, base_P):
 		self.E = E
 		self.setDistinctEvents(P)
+		
+		#Ec_linked contains a shallow copy of distinct events for this cluster 
 		Ec_linked = group.getEventsSubsetShallow(E=E, indicies=list(self.Ec_d))
-		print evman.totalSum(P=P,utl=utl)
-		# print Ec_temp
-		evman.TS( E=Ec_linked, P=P, utl=utl)
-		print evman.totalSum(P=P,utl=utl),'\n'
+
+		evman.TS(E=Ec_linked, P=P)
+		evman.CA(E=Ec_linked, P=P, base_P = base_P)
 
 	def __str__(self):
 		return '\nID' + str(self.id) + '\nCentroid:' + str(self.centroid) + '\nMembers:' + str(self.members)
