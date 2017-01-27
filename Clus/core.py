@@ -24,7 +24,7 @@ def initClusters(P, k, depts):
 		p_i = random.sample(depts[j]['P'], 1)[0]
 
 	 	while p_i in locations:
-	 		p_i = random.sample(depts[j]['P'], 1)
+	 		p_i = random.sample(depts[j]['P'], 1)[0]
 
 	 	locations.append(p_i)
 	 	C.append( Cluster(id=i, centroid=P[p_i].events))

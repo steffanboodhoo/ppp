@@ -8,7 +8,7 @@ def extendEvents(E, P, depts, k):
 		#for each new event being added to department d_i
 		for e_i_t in range(k):
 			# e_i = len(P) + e_i_t
-			event = Event(id=len(E)-1, weight=random.randint(utl.VAL+1,10))
+			event = Event(id=len(E), weight=random.randint(utl.VAL+1,10))
 			event.inviteA( P=P, dept=depts[d_i])
 			E.append(event)
 

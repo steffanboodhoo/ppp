@@ -51,8 +51,10 @@ class Event(object):
 
 	def inviteA(self, P, dept):
 		invite_count = random.randint( utl.A_INVITE_MIN, utl.A_INVITE_MAX)
+		#invite 'invite_count' number of people
 		self.invited = random.sample(dept['P'], invite_count)
 		
+		#for each person invited, append event to their list of events 
 		for p_i in self.invited:
 			P[p_i].events.append(self.id)
 
@@ -136,7 +138,7 @@ class Cluster(object):
 		Ec_linked = group.getEventsSubsetShallow(E=E, indicies=list(self.Ec_d))
 
 		evman.TS(E=Ec_linked, P=P)
-		evman.CA(E=Ec_linked, P=P, base_P = base_P)
+		evman.CA(E=Ec_linked, P=P, base_P = base_P, full_E = E)
 
 	def __str__(self):
 		return '\nID' + str(self.id) + '\nCentroid:' + str(self.centroid) + '\nMembers:' + str(self.members)

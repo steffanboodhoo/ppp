@@ -30,10 +30,14 @@ def placeEvent(event, P):
 
 #E is the set of events, and P is the set of persons, 
 #base_P is the unmodified set of persons
-def removeEvent(e_i, E, P, base_P):
+def removeEvent(e_i, E, P, base_P, full_E=None): 
+	if not(full_E is None):
+		E = full_E
+
 	event = E[e_i]
 	for p_i in event.invited:
 		person = P[p_i]
+	
 		#return person's slot to base weight before any events
 		person.SCHEDULE[event.day][event.slot] = base_P[p_i].SCHEDULE[event.day][event.slot]
 
@@ -42,9 +46,6 @@ def removeEvent(e_i, E, P, base_P):
 		# print person.events
 		for e_j in person.events:
 			
-			# print e_j,'---'
-			# print len(E)
-			# print E[e_j]
 			#not same event
 			if e_j != e_i \
 				and E[e_i].day == E[e_j].day \
@@ -69,10 +70,11 @@ def TS(E, P):
 		[max_day, max_slot] = findPlace(event, P)
 		placeEvent(event, P)
 
-def CA(E, P, base_P):
+def CA(E, P, base_P, full_E = None):
 	utl = Utils.Instance()
+	print len(E)
 	for event in E:
-		removeEvent(event.id, E, P, base_P)
+		removeEvent(event.id, E, P, base_P, full_E)
 		[max_day, max_slot] = findPlace(event, P)
 		placeEvent(event,P)
 
