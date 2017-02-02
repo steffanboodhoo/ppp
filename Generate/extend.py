@@ -3,6 +3,7 @@ from models import *
 def extendEvents(E, P, depts, k):
 	utl = Utils.Instance()
 	k = k/len(depts)
+	print 'k',k
 	#for each department
 	for d_i in range(len(depts)):
 		#for each new event being added to department d_i
@@ -12,5 +13,5 @@ def extendEvents(E, P, depts, k):
 			event.inviteA( P=P, dept=depts[d_i])
 			E.append(event)
 
-			#each time we add k events to a dept we need to record it
-			utl.DEPT_EVENTS_A  = utl.DEPT_EVENTS_A  + k
+		#each time we add k events to a dept we need to record it
+		utl.DEPT_EVENTS_A  = utl.DEPT_EVENTS_A  + k

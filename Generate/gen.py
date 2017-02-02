@@ -34,8 +34,10 @@ def genE(utl, P, depts):
 	E = []
 
 	#TYPE A
+	print utl.DEPT_EVENTS_A
 	for i in range(utl.DEPT_COUNT):
 		for j in range(utl.DEPT_EVENTS_A):
+			# print j
 			# print len(E)
 			event = Event(id=len(E), weight=random.randint(utl.VAL+1,10))
 			event.inviteA( P=P, dept=depts[i])
