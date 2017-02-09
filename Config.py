@@ -20,8 +20,8 @@ class Utils:
 		self.K_CLUSTERS = 16
 
 		# SCHEDULE
-		self.DAY = 2
-		self.SLOT = 5
+		self.DAY = 5
+		self.SLOT = 18
 
 		# PERSONAL
 		self.VAL = 3
@@ -29,13 +29,13 @@ class Utils:
 		self.PERSONAL_E_MIN = 2
 
 		# DEPARTMENTS - PERSONS
-		self.DEPT_COUNT = 2 #number of departments
-		self.PER_DEPT = 80
+		self.DEPT_COUNT = 4 #number of departments
+		self.PER_DEPT = 50
 
 		# DEPARTMENT-EVENTS
 		# TYPE A - PER DEPARTMENT
-		self.DEPT_EVENTS_A = 800
-		self.A_INVITE_MAX = 5
+		self.DEPT_EVENTS_A = 1000
+		self.A_INVITE_MAX = 10
 		self.A_INVITE_MIN = 3
 
 		# TYPE B - INTER DEPT MEETING

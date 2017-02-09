@@ -20,7 +20,7 @@ def varyEvents():
 	base_E = gen.genE(utl, base_P, depts)
 	print '----------------- ABOUT TO LOOP'
 	clusters_count = [2**c for c in range(1,5)]
-	iterations=3
+	iterations=20
 	time_graph = []
 	weight_graph = []
 
@@ -78,10 +78,10 @@ def varyEvents():
 
 		time_graph.append((len(base_E),sub_graph_time))
 		weight_graph.append((len(base_E),sub_graph_weight))
-		extend.extendEvents(E=base_E, P=base_P, depts=depts, k=5000)
+		extend.extendEvents(E=base_E, P=base_P, depts=depts, k=1000)
 		
-	print weight_graph
-	return time_graph
+	# print weight_graph
+	return [time_graph, weight_graph]
 
 def convert( graph ):
 	n_graph = {}
@@ -94,49 +94,91 @@ def convert( graph ):
 			n_graph[v[0]].append(v[1])
 	print n_graph
 
-def avg_values( values):
-	avg_values= []
+# def avg_values( values):
+# 	avg_values= []
 
-	for j in range(len(values[0])):
-		val = 0
-		for graph in values:
-			val = val + graph[j][1]
+# 	for j in range(len(values[0])):
+# 		val = 0
+# 		for graph in values:
+# 			val = val + graph[j][1]
 
-		val = val / (len(values)*1.0)
-		avg_values.append((values[0][j][0], val))
+# 		val = val / (len(values)*1.0)
+# 		avg_values.append((values[0][j][0], val))
 
-	return avg_values
+# 	return avg_values
 
-	def avg_vals():
-		for x in x_vals:
-			for c in c_vals:
-				for graph in values:
 
 if __name__ == '__main__':
 	utl = Utils.Instance()
 	run_amount = 2
 	utl.K_CLUSTERS = 2
-	values = []
+	weight_values = []
+	time_values = []
 	base_events = utl.DEPT_EVENTS_A
-	for i in range(10):
+	for i in range(20):
 		utl.DEPT_EVENTS_A = base_events
 		graph = varyEvents()
-		print convert(graph)
-		values.append(graph)
+		time_values.append(graph[0])
+		weight_values.append(graph[1])
 
-	pprint(values)
-	# return 0 
-	'''
-	base_events = utl.DEPT_EVENTS_A
-	for i in range(10):
-		utl.DEPT_EVENTS_A = base_events
-		graph = varyEvents()
-		print graph
-		values.append(graph)
-	print 'finished simulations'
-	graph = avg_values(values)
-	print graph
-	# for i in range(run_amount):
-		# values.append(varyEvents())
-	# test()
-	'''
+
+	records = len(weight_values)
+	events = len(weight_values[0])
+	clusters = len(weight_values[0][0][1])
+
+	# pprint (weight_values[0][0])
+	w_cluster_graphs = {}
+	for cluster in range(clusters): # 1 2 4 8 16 32
+		w_cluster_graphs[cluster] = []
+
+		for event in range(events):
+			sum = 0
+			for record in range(records):		
+				sum = sum + weight_values[record][event][1][cluster][1]
+			w_cluster_graphs[cluster].append(sum/(records*1.0))
+
+	t_cluster_graphs = {}
+	for cluster in range(clusters): # 1 2 4 8 16 32
+		t_cluster_graphs[cluster] = []
+
+		for event in range(events):
+			sum = 0
+			for record in range(records):		
+				sum = sum + time_values[record][event][1][cluster][1]
+			t_cluster_graphs[cluster].append(sum/(records*1.0))
+
+
+	x_values = []
+	for event in range(events):
+		x_values.append(weight_values[0][event][0])
+	# print x_values
+
+
+	import plotly.plotly as py
+	import plotly.graph_objs as go
+	import plotly.tools as tools
+
+	tools.set_credentials_file(username='boodhoo100', api_key='AhDBNZz4OORUm26OMul6')
+	data = []
+	for i in w_cluster_graphs.keys():
+		val = 2**i
+		graph = go.Scatter(
+			x = x_values,
+			y = w_cluster_graphs[i],
+			name = str(val)+' clusters w'
+		)
+		data.append(graph)
+	py.plot(data, filename='weight')
+
+
+	data = []
+	for i in t_cluster_graphs.keys():
+		val = 2**i
+		graph = go.Scatter(
+			x = x_values,
+			y = t_cluster_graphs[i],
+			name = str(val)+' clusters t'
+		)
+		data.append(graph)
+
+	py.plot(data, filename='time')
