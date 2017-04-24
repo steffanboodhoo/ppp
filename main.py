@@ -10,17 +10,19 @@ import time, timeit
 from pprint import pprint
 
 def varyEvents():
-	print '---------------------JUST STARTED---------------------'
+	
 	utl = Utils.Instance()
-	#Generate People P (their personal schedules), and place them into departments depts 
-	[base_P,depts] = gen.genP()
+	
+	#Generate People P (Personal Schedules), depts contain references to people for their dept 
+	[base_P, depts] = gen.genP()
+
 	#generate events E, for persons in each department
-	print '---------------print before events'
-	print utl
 	base_E = gen.genE(utl, base_P, depts)
-	print '----------------- ABOUT TO LOOP'
-	clusters_count = [2**c for c in range(1,5)]
-	iterations=20
+	return
+
+
+	clusters_count = [2**c for c in range(1,5)] #[2^1, 2^2, 2^3, 2^4]
+	iterations=2
 	time_graph = []
 	weight_graph = []
 
@@ -71,14 +73,10 @@ def varyEvents():
 			clustered_time = (end - start) + max_sched
 			sub_graph_time.append((curr_clusters_amount, clustered_time))
 			sub_graph_weight.append((curr_clusters_amount, evman.totalSum(temp_P)))
-			# print 'unclustered time',unclustered_time
-			# print 'clustered time',clustered_time
-			# val = ((unclustered_time - clustered_time)/clustered_time) * 100
-			# print '(total_clustered - unclustered)/clustered_time * 100:',val
 
 		time_graph.append((len(base_E),sub_graph_time))
 		weight_graph.append((len(base_E),sub_graph_weight))
-		extend.extendEvents(E=base_E, P=base_P, depts=depts, k=1000)
+		extend.extendEvents(E=base_E, P=base_P, depts=depts, k=30)
 		
 	# print weight_graph
 	return [time_graph, weight_graph]
@@ -94,21 +92,13 @@ def convert( graph ):
 			n_graph[v[0]].append(v[1])
 	print n_graph
 
-# def avg_values( values):
-# 	avg_values= []
 
-# 	for j in range(len(values[0])):
-# 		val = 0
-# 		for graph in values:
-# 			val = val + graph[j][1]
-
-# 		val = val / (len(values)*1.0)
-# 		avg_values.append((values[0][j][0], val))
-
-# 	return avg_values
 
 
 if __name__ == '__main__':
+	varyEvents()
+	import sys
+	sys.exit()
 	utl = Utils.Instance()
 	run_amount = 2
 	utl.K_CLUSTERS = 2

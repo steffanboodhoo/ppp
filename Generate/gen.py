@@ -15,16 +15,17 @@ def genP():
 
 	#for each department
 	for i in range(utl.DEPT_COUNT):
-		depts[i] = {'P':[]} #each department's population, property P; list
+		depts[i] = [] #each department's population; list containing id's referencing actual population 
+
+		#for each person in the department
 		for p in range(utl.PER_DEPT):
-			person = Person(id=len(P), dept=i) #creating Person
-			P.append(person)#adding Person to population P
-			depts[i]['P'].append(person.id)#adds index of new person to dept population
+			#Create Person
+			person = Person(id=len(P), dept=i) 
+			#Add person to population
+			P.append(person)
+			#Add's reference of this person to current department
+			depts[i].append(person.id)
 
-
-	
-	# for i in range(len(depts)):
-	# 	print depts[i]
 	return [P,depts]
 
 
@@ -34,11 +35,8 @@ def genE(utl, P, depts):
 	E = []
 
 	#TYPE A
-	print utl.DEPT_EVENTS_A
 	for i in range(utl.DEPT_COUNT):
 		for j in range(utl.DEPT_EVENTS_A):
-			# print j
-			# print len(E)
 			event = Event(id=len(E), weight=random.randint(utl.VAL+1,10))
 			event.inviteA( P=P, dept=depts[i])
 			E.append(event)
