@@ -10,7 +10,6 @@ import time, timeit
 from pprint import pprint
 
 def varyEvents():
-	
 	utl = Utils.Instance()
 	
 	#GENERATE PERSONS base_P, ASSIGN TO DEPARTMENTS depts 
@@ -48,7 +47,7 @@ def varyEvents():
 
 		extend.extendEvents(E=base_E, P=base_P, depts=depts, k=event_increment)
 		
-	return [time_graph, weight_graph]
+	return [cluster_times, cluster_weights]
 
 #Unclustered 
 def unclustered(base_E, base_P):
@@ -67,13 +66,10 @@ def clustered(base_E, base_P, depts):
 	utl = Utils.Instance()
 	#COPY OF EVENTS AND PERSONS 
 	temp_E, temp_P = copy.deepcopy(base_E), copy.deepcopy(base_P)
-
 	#CREATE EMPTY CLUSTERS WITH CENTRIOD 
 	C = core.initClusters(temp_P, utl.K_CLUSTERS, depts) # utl.K_CLUSTERS
-	
 	#TRAIN CLUSTERS
 	#******TODO******
-
 	#PLACE PERSONS IN CLUSTERS
 	C = core.placePeople(base_P, C)
 
@@ -120,7 +116,9 @@ def convert( graph ):
 
 
 if __name__ == '__main__':
-	varyEvents()
+	[cluster_times, cluster_weights] = varyEvents()
+	pprint(cluster_times)
+	pprint(cluster_weights)
 	import sys
 	sys.exit()
 	utl = Utils.Instance()

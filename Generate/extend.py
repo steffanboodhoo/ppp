@@ -1,5 +1,6 @@
-from models import *
-
+from Models.Event import Event
+import random
+from Config import Utils
 def extendEvents(E, P, depts, k):
 	utl = Utils.Instance()
 	k = k/len(depts)
