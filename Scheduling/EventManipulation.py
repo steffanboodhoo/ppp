@@ -72,7 +72,7 @@ def TS(E, P):
 
 def CA(E, P, base_P, full_E = None):
 	utl = Utils.Instance()
-	print len(E)
+	print "number of events",len(E)
 	for event in E:
 		removeEvent(event.id, E, P, base_P, full_E)
 		[max_day, max_slot] = findPlace(event, P)

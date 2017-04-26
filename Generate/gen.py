@@ -3,7 +3,9 @@ import random
 from pprint import pprint
 
 from Config import Utils 
-from models import *
+from Models.Person import Person
+from Models.Event import Event
+
 
 
 
@@ -37,7 +39,7 @@ def genE(utl, P, depts):
 	#TYPE A
 	for i in range(utl.DEPT_COUNT):
 		for j in range(utl.DEPT_EVENTS_A):
-			event = Event(id=len(E), weight=random.randint(utl.VAL+1,10))
+			event = Event(id=len(E), weight=random.randint(utl.PERSONAL_VALUE_BOUND+1,10))
 			event.inviteA( P=P, dept=depts[i])
 			E.append(event)
 

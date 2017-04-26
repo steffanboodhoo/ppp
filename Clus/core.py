@@ -1,7 +1,7 @@
 from random import randint, sample
 
 import distance as distfn
-from models import *
+from Models.Cluster import Cluster
 # def cluster():
 # //input: K, set of points x1...xn
 # //place centroids c1...ck at random locations
@@ -21,10 +21,10 @@ def initClusters(P, k, depts):
 	C = [] 
 	for i in range(k):
 		j = i%len(depts)
-		p_i = random.sample(depts[j]['P'], 1)[0]
+		p_i = sample(depts[j], 1)[0]
 
 	 	while p_i in locations:
-	 		p_i = random.sample(depts[j]['P'], 1)[0]
+	 		p_i = sample(depts[j], 1)[0]
 
 	 	locations.append(p_i)
 	 	C.append( Cluster(id=i, centroid=P[p_i].events))

@@ -13,74 +13,98 @@ def varyEvents():
 	
 	utl = Utils.Instance()
 	
-	#Generate People P (Personal Schedules), depts contain references to people for their dept 
+	#GENERATE PERSONS base_P, ASSIGN TO DEPARTMENTS depts 
 	[base_P, depts] = gen.genP()
 
-	#generate events E, for persons in each department
+	#GENERATE DEPARTMENT LEVEL EVENTS base_E
 	base_E = gen.genE(utl, base_P, depts)
-	return
 
+	#SIMULATION VARIABLES
+	clusters_count = [2**c for c in range(1,4)] #[2^1, 2^2, 2^3] - different cluster amounts
+	event_increment = 30	#the amount of events to add
+	iterations = 2			#number of iterations - how many times we increase by event_increment
+	
+	#DATASTRUCTURES FOR RESULTS
+	# results [ k clusters ] [iteration of k] - using k clusters, what is the value created for every K, K being set of event amounts
+	cluster_times = [ [0]*iterations for i in range((len(clusters_count)+1)) ]  
+	cluster_weights = [ [0]*iterations for i in range((len(clusters_count)+1)) ]
 
-	clusters_count = [2**c for c in range(1,5)] #[2^1, 2^2, 2^3, 2^4]
-	iterations=2
-	time_graph = []
-	weight_graph = []
-
+	#RUN THE SIMULATION 'iterations' TIMES 
 	for i in range(iterations):
-		sub_graph_time = []	
-		sub_graph_weight = []
-		#UNCLUSTERED
-		temp_E = copy.deepcopy(base_E)
-		temp_P = copy.deepcopy(base_P)
-		#Unclustered TS
-		start = time.time()
-		evman.TS(temp_E, temp_P)
-		evman.CA(temp_E, temp_P, base_P)
-		end = time.time()
-		unclustered_time = end - start
-		sub_graph_time.append((1,unclustered_time))
-		sub_graph_weight.append((1, evman.totalSum(temp_P)))
-		#VARIED CLUSTERS
-		for curr_clusters_amount in clusters_count:
-			#SET NUMBER OF CLUSTERS TO RUN WITH
-			utl.K_CLUSTERS = curr_clusters_amount
-
-			temp_E = copy.deepcopy(base_E)
-			temp_P = copy.deepcopy(base_P)
-			#create a set of empty clusters C, with centroids being a person from a department
-			C = core.initClusters(temp_P, utl.K_CLUSTERS, depts)
-			#place the persons in these clusters
-			C = core.placePeople(base_P, C)
-			
-			max_sched = 0
-			#for each cluster
-			for c in C:
-				ctemp_E = copy.deepcopy(temp_E)
-				ctemp_P = copy.deepcopy(temp_P)
-				print 'Cluster Members - ', len(c.members)
-				start = time.time()
-				c.scheduleClusterP1( ctemp_E, ctemp_P, base_P )
-				end = time.time()
-				max_sched = max(end - start, max_sched)	
-
-
-			#evaluate the placements for events across all clusters (choose the best|only placement for an event across clusters)
-			start = time.time()
-			group.evaluateClusterPlacements(temp_E, temp_P, C)
-			for e in temp_E:
-				evman.placeEvent(e, temp_P)
-			end = time.time()
-			clustered_time = (end - start) + max_sched
-			sub_graph_time.append((curr_clusters_amount, clustered_time))
-			sub_graph_weight.append((curr_clusters_amount, evman.totalSum(temp_P)))
-
-		time_graph.append((len(base_E),sub_graph_time))
-		weight_graph.append((len(base_E),sub_graph_weight))
-		extend.extendEvents(E=base_E, P=base_P, depts=depts, k=30)
 		
-	# print weight_graph
+		#UNCLUSTERED 
+		[ curr_time, curr_weight] = unclustered(base_E, base_P)
+		cluster_times [0][i] = curr_time
+		cluster_weights [0][i] = curr_weight
+
+		#CLUSTERED
+		for c in range(len(clusters_count)):
+			#SET NUMBER OF CLUSTERS TO RUN WITH
+			utl.K_CLUSTERS = clusters_count[c] # c is the index of the number of clusters
+			[curr_time, curr_weight] = clustered(base_E, base_P, depts)
+			cluster_times [c+1][i] = curr_time
+			cluster_weights [c+1][i] = curr_weight		
+
+
+		extend.extendEvents(E=base_E, P=base_P, depts=depts, k=event_increment)
+		
 	return [time_graph, weight_graph]
 
+#Unclustered 
+def unclustered(base_E, base_P):
+	#COPY OF EVENTS AND PERSONS 
+	temp_E, temp_P = copy.deepcopy(base_E), copy.deepcopy(base_P)
+	
+	start = time.time()				# start time
+	evman.TS(temp_E, temp_P)		#Perform TS
+	evman.CA(temp_E, temp_P, base_P)# Perform CA
+	end = time.time()				# end time
+	unclustered_time = end - start
+	unclustered_weight = evman.totalSum(temp_P) #total weight
+	return [unclustered_time, unclustered_weight]
+
+def clustered(base_E, base_P, depts):
+	utl = Utils.Instance()
+	#COPY OF EVENTS AND PERSONS 
+	temp_E, temp_P = copy.deepcopy(base_E), copy.deepcopy(base_P)
+
+	#CREATE EMPTY CLUSTERS WITH CENTRIOD 
+	C = core.initClusters(temp_P, utl.K_CLUSTERS, depts) # utl.K_CLUSTERS
+	
+	#TRAIN CLUSTERS
+	#******TODO******
+
+	#PLACE PERSONS IN CLUSTERS
+	C = core.placePeople(base_P, C)
+
+	max_sched = 0
+	#FOR EACH CLUSTER
+	for c in C:
+		#CREATE A CLEAN COPY FOR EACH CLUSTER
+		ctemp_E, ctemp_P = copy.deepcopy(temp_E), copy.deepcopy(temp_P)
+
+		start = time.time()								#start time
+		c.scheduleClusterP1( ctemp_E, ctemp_P, base_P )	#perform TS and CA
+		end = time.time()								#end time
+		#SAVE MAX TIME ACROSS ALL c IN C
+		max_sched = max(end - start, max_sched)			
+
+
+	start = time.time()
+	#USE C {all clusters, now with events placed} TO CHOOSE BEST PLACEMENTS FOR E
+	group.evaluateClusterPlacements(temp_E, temp_P, C)
+	for e in temp_E:
+		evman.placeEvent(e, temp_P)
+	end = time.time()
+
+	clustered_time = (end - start) + max_sched
+	clustered_weight = evman.totalSum(temp_P)
+	print clustered_time
+	return [clustered_time, clustered_weight]
+
+######################################################################################
+################################ HELPER FUNCTIONS ####################################
+######################################################################################
 def convert( graph ):
 	n_graph = {}
 	for point_values in graph: #  (x, [ (f1,f1(x)), (f2, f2(x)), (f3,f3(x)) ])
